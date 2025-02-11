@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+        /* Chatbot Container */
+        #chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            background-color: #f1f1f1;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-family: 'Poppins', sans-serif;
+            display: none; /* Hidden by default */
+        }
+
+        /* Chatbot Header */
+        #chatbot-header {
+            background-color: #212529;
+            color: white;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* Chatbot Body */
+        #chatbot-body {
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Chatbot Input Area */
+        #chatbot-input {
+            display: flex;
+            padding: 10px;
+        }
+
+        #chatbot-input input {
+            flex: 1;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        #chatbot-input button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            background-color: #212529;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Chatbot Messages */
+        .message {
+            margin-bottom: 10px;
+        }
+
+        .message.user {
+            text-align: right;
+        }
+
+        .message.bot {
+            text-align: left;
+        }
+
+        .message.bot span {
+            background-color: #212529;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .message.user span {
+            background-color: #fcc358;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Chatbot Container -->
+    <div id="chatbot-container">
+        <!-- Chatbot Header -->
+        <div id="chatbot-header" onclick="toggleChatbot()">
+            Chatbot
+        </div>
+        <!-- Chatbot Body -->
+        <div id="chatbot-body">
+            <div class="message bot">
+                <span>Hello! How can I assist you today?</span>
+            </div>
+        </div>
+        <!-- Chatbot Input -->
+        <div id="chatbot-input">
+            <input type="text" id="chatbot-input-field" placeholder="Type your message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <!-- Chatbot Toggle Button -->
+    <button id="chatbot-toggle-button" onclick="toggleChatbot()" style="position: fixed; bottom: 20px; right: 20px; padding: 10px; background-color: #212529; color: white; border: none; border-radius: 50%; cursor: pointer;">
+        💬
+    </button>
+
+    <script>
+        // Toggle Chatbot Visibility
+        function toggleChatbot() {
+            const chatbotContainer = document.getElementById('chatbot-container');
+            if (chatbotContainer.style.display === 'none' || chatbotContainer.style.display === '') {
+                chatbotContainer.style.display = 'block';
+            } else {
+                chatbotContainer.style.display = 'none';
+            }
+        }
+
+        // Send Message to Chatbot
+        function sendMessage() {
+            const inputField = document.getElementById('chatbot-input-field');
+            const message = inputField.value.trim();
+
+            if (message !== '') {
+                // Display User Message
+                const chatbotBody = document.getElementById('chatbot-body');
+                const userMessage = document.createElement('div');
+                userMessage.className = 'message user';
+                userMessage.innerHTML = `<span>${message}</span>`;
+                chatbotBody.appendChild(userMessage);
+
+                // Clear Input Field
+                inputField.value = '';
+
+                // Generate Bot Response
+                const botResponse = getBotResponse(message);
+                const botMessage = document.createElement('div');
+                botMessage.className = 'message bot';
+                botMessage.innerHTML = `<span>${botResponse}</span>`;
+                chatbotBody.appendChild(botMessage);
+
+                // Scroll to Bottom
+                chatbotBody.scrollTop = chatbotBody.scrollHeight;
+            }
+        }
+
+        // Get Bot Response
+        function getBotResponse(message) {
+            const lowerCaseMessage = message.toLowerCase();
+
+            if (lowerCaseMessage.includes('hello') || lowerCaseMessage.includes('hi')) {
+                return 'Hi there! How can I help you?';
+            } else if (lowerCaseMessage.includes('What is the age required for donation')) {
+                return 'Mostly from 25 to 60 years is considered';
+            } else if (lowerCaseMessage.includes('blood group')) {
+                return 'Your blood group is matched with the requests. Check the table for details.';
+            } else if (lowerCaseMessage.includes('thank you')) {
+                return 'You\'re welcome! Let me know if you need further assistance.';
+            } else {
+                return 'I’m sorry, I didn’t understand that. Can you please rephrase?';
+            }
+        }
+    </script>
+</body>
+</html>

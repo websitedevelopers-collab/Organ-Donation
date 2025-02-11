@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find a Donor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            text-align: center;
+        }
+
+        .container {
+            width: 50%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px 0px grey;
+            margin-top: 50px;
+        }
+
+        .input-group {
+            margin: 10px 0;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid grey;
+        }
+
+        .button {
+            background: #e48a23;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .button:hover {
+            background: #a05d11;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #d4edda;
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Find a Donor</h2>
+        <form id="searchForm">
+            <div class="input-group">
+                <label for="organ">Select Organ:</label>
+                <select id="organ" name="organ">
+                    <option value="kidney">Kidney</option>
+                    <option value="liver">Liver</option>
+                    <option value="heart">Heart</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="blood_group">Select Blood Group:</label>
+                <select id="blood_group" name="blood_group">
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="location">Enter Location:</label>
+                <input type="text" id="location" name="location" placeholder="Enter city name">
+            </div>
+
+            <div class="input-group">
+                <label for="gender">Select Gender:</label>
+                <select id="gender" name="gender">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <button type="button" class="button" onclick="searchDonor()">Search Donor</button>
+        </form>
+
+        <div id="result"></div>
+                
+    </div>
+
+    <script>
+        function searchDonor() {
+            var organ = document.getElementById("organ").value;
+            var blood_group = document.getElementById("blood_group").value;
+            var location = document.getElementById("location").value;
+            var gender = document.getElementById("gender").value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "search_donor.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("result").style.display = "block";
+                    document.getElementById("result").innerHTML = xhr.responseText;
+                }
+            };
+
+            xhr.send("organ=" + organ + "&blood_group=" + blood_group + "&location=" + location + "&gender=" + gender);
+        }
+    </script>
+
+</body>
+</html>
